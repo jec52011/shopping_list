@@ -2,16 +2,20 @@
   <div>
     <h1>Shopping List</h1>
     <b-table striped hover :items="items" :fields="fields">
-      <template slot="check" slot-scope="row">
-        <b-form-checkbox v-model="row.item.strike">{{row.item.strike}}</b-form-checkbox>
+      <template slot="strike" slot-scope="data">
+        <b-form-checkbox v-model="data.item.strike" :checked="changeVariant(data.item)">{{data.value}}</b-form-checkbox>
       </template>
 
-      <template slot="itemName" slot-scope="row">
-        {{ row.item.item }}
+      <template slot="item" slot-scope="data">
+        {{ data.value }}
       </template>
 
-      <template slot="storeName" slot-scope="row">
-        {{ row.item.store }}
+      <template slot="store" slot-scope="data">
+        {{ data.value }}
+      </template>
+
+      <template slot="location" slot-scope="data">
+        {{ data.value }}
       </template>
 
     </b-table>
@@ -20,38 +24,67 @@
 </template>
 
 <script>
-// 1. Find a way to draw HTML Input elements (textfields, checkboxes) in your table.
-// (Read up on how to use slots)
-// 2. Change item and store to textfields, and isActive to a checkbox
-// 3. Add an additional property to know if an item is strikethrough (I cant get strikethough to appear at start)
+// 1. CSS to strikeout a whole row
+// 2. Approach #1 using _rowVariant, which we made conditional based on checkbox
+// 3. Override how table-danger behaves
+// Next time, text fields for adding, filter?, add location data
 export default {
   data () {
     return {
       items: [
-        { strike: true, item: 'Quinoa', store: 'Costco' },
-        { strike: false, item: 'Stand Mixer', store: 'Macy\'s' },
-        { strike: true, item: 'Polo Shirt', store: 'Macy\'s' },
-        { strike: false, item: 'Carrots', store: 'Costco' }
+        { strike: true, item: 'Quinoa', store: 'Costco', location: 'Norwalk', _rowVariant: 'danger' },
+        { strike: false, item: 'Stand Mixer', store: 'Macy\'s', location: 'Trumbull', _rowVariant: 'danger' },
+        { strike: true, item: 'Polo Shirt', store: 'Macy\'s', location: 'Trumbull', _rowVariant: 'danger' },
+        { strike: false, item: 'Carrots', store: 'Costco', location: 'Any', _rowVariant: 'danger' }
       ],
       fields: [
-        { key: 'check', label: 'Check' },
-        { key: 'itemName', label: 'Item' },
-        { key: 'storeName', label: 'Store' }
+        { key: 'strike', label: 'Check' },
+        { key: 'item', label: 'Item' },
+        { key: 'store', label: 'Store' },
+        { key: 'location', label: 'Location'}
       ]
     }
   },
   methods: {
     addItem () {
-      this.items.push({strike: false, item: 'Jeans', store: 'Kohl\'s'})
+      this.items.push({strike: false, item: 'Jeans', store: 'Kohl\'s', location: 'Any'})
+    },
+    changeVariant (row) {
+      if (row.strike == true) {
+        row._rowVariant = 'danger'
+      }
+      else {
+        row._rowVariant = ''
+      }
     }
   }
 }
 </script>
 
-<style scoped>
-  .strike{
-    text-decoration: line-through;
+<style>
+  table { border-collapse: collapse; }
+
+  td { position: relative; }
+
+  tr.table-danger td:before {
+  content: " ";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  border-bottom: 1px solid #111;
+  width: 100%;
   }
+
+  .table-danger, .table-danger > th, .table-danger > td {
+    background-color: transparent;
+  }
+  .table-hover .table-danger:hover > td, .table-hover .table-danger:hover > th {
+    background-color: transparent;
+  }
+  .table-danger th, .table-danger td, .table-danger thead th, .table-danger tbody + tbody {
+    border-color: rgb(222, 226, 230);
+  }
+
 </style>
 
 <!-- table-basic-1.vue -->
