@@ -19,6 +19,18 @@
       </template>
 
     </b-table>
+
+    <b-form inline @submit="onSubmit">
+      <label class="sr-only" for="inputName">Item: </label>
+      <b-input
+        class="mb-2 mr-sm-2 mb-sm-0"
+        id="inputName"
+        placeholder="Item name"
+        type="text"
+        required />
+      <b-button type="submit" variant="primary">Submit</b-button>
+    </b-form>
+
     <b-button @click="addItem">Add</b-button>
   </div>
 </template>
@@ -56,6 +68,10 @@ export default {
       else {
         row._rowVariant = ''
       }
+    },
+    onSubmit (evt) {
+      evt.preventDefault()
+      alert(JSON.stringify(this.form))
     }
   }
 }
@@ -63,9 +79,7 @@ export default {
 
 <style>
   table { border-collapse: collapse; }
-
   td { position: relative; }
-
   tr.table-danger td:before {
   content: " ";
   position: absolute;
@@ -74,7 +88,6 @@ export default {
   border-bottom: 1px solid #111;
   width: 100%;
   }
-
   .table-danger, .table-danger > th, .table-danger > td {
     background-color: transparent;
   }
@@ -84,7 +97,6 @@ export default {
   .table-danger th, .table-danger td, .table-danger thead th, .table-danger tbody + tbody {
     border-color: rgb(222, 226, 230);
   }
-
 </style>
 
 <!-- table-basic-1.vue -->
