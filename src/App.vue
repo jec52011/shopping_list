@@ -1,12 +1,20 @@
 <template>
   <div id="app">
-    <router-view/>
+    <div>
+      <title_bar></title_bar>
+    </div>
+    <div>
+      <router-view/>
+    </div>
   </div>
 </template>
 
 <script>
+// <nav>
+// <sidebar> <--These go in template
 import Vue from 'vue'
 import BootstrapVue from 'bootstrap-vue'
+import title_bar from '@/components/title_bar'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 

@@ -1,6 +1,6 @@
 <template>
   <b-container fluid>
-    <h1>Shopping List</h1>
+    <h1>Shopping List <font-awesome-icon icon="shopping-cart" /></h1>
     <b-row>
       <b-table striped hover :items="items" :fields="fields">
         <template slot="strike" slot-scope="data">
