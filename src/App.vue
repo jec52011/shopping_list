@@ -1,11 +1,7 @@
 <template>
   <div id="app">
-    <div>
-      <title_bar></title_bar>
-    </div>
-    <div>
-      <router-view/>
-    </div>
+    <TitleBar></TitleBar>
+    <router-view/>
   </div>
 </template>
 
@@ -14,14 +10,17 @@
 // <sidebar> <--These go in template
 import Vue from 'vue'
 import BootstrapVue from 'bootstrap-vue'
-import title_bar from '@/components/title_bar'
+import TitleBar from '@/components/TitleBar.vue'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 
 Vue.use(BootstrapVue)
 
 export default {
-  name: 'App'
+  name: 'App',
+  components: {
+    TitleBar
+  }
 }
 </script>
 

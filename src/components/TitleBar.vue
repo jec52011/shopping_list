@@ -5,7 +5,10 @@
 </template>
 
 <script>
-
+export default {
+  name: 'TitleBar',
+  data () {}
+}
 </script>
 
 <style>
