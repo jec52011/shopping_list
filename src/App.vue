@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <TitleBar></TitleBar>
+    <TitleBar name='custom data that you can pass in'></TitleBar>
     <router-view/>
   </div>
 </template>

@@ -1,13 +1,15 @@
 <template>
   <div>
     <h1>Milford Shopping List <font-awesome-icon icon="shopping-cart" /></h1>
+    <p>{{name}}</p>
   </div>
 </template>
 
 <script>
 export default {
   name: 'TitleBar',
-  data () {}
+  data () {},
+  props: ['name']
 }
 </script>
 
