@@ -1,6 +1,6 @@
 <template>
   <b-container fluid>
-    <h1>Shopping List <font-awesome-icon icon="shopping-cart" /></h1>
+    <h1 class="table-title">Shopping List</h1>
     <b-row>
       <b-table striped hover :items="items" :fields="fields">
         <template slot="strike" slot-scope="data">
@@ -132,6 +132,9 @@ export default {
   }
   .table-danger th, .table-danger td, .table-danger thead th, .table-danger tbody + tbody {
     border-color: rgb(222, 226, 230);
+  }
+  .table-title {
+    padding-top: 30px;
   }
 </style>
 
