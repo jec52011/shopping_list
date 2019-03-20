@@ -19,4 +19,12 @@ router.post('/', function(req, res, next) {
   });
 });
 
+/* DELETE ITEMS */
+router.delete('/', function(req, res, next) {
+  Item.deleteMany({ strike: true }, function (err, post) {
+    if (err) return next(err);
+    res.json(post);
+  });
+});
+
 module.exports = router;

@@ -23,6 +23,7 @@
     </b-row>
 
     <AddItem></AddItem>
+    <DeleteItem></DeleteItem>
 
   </b-container>
 </template>
@@ -30,11 +31,12 @@
 <script>
 
 import AddItem from './AddItem'
+import DeleteItem from './DeleteItem'
 import axios from 'axios'
 
 export default {
   name: 'MainV2',
-  components: { AddItem },
+  components: { AddItem, DeleteItem },
   data () {
     return {
       fields: {
