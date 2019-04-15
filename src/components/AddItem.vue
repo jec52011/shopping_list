@@ -52,8 +52,8 @@ export default {
       axios.post(`http://localhost:3000/item`, this.item)
       .then(response => {
         this.$router.push({
-          name: 'MainV2',
-          params: { id: response.data._id }
+          //name: 'MainV2'//,
+          //params: { id: response.data._id }
         })
       })
       .catch(e => {

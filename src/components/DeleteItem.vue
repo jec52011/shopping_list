@@ -14,9 +14,10 @@ export default {
     deleteitems () {
       axios.delete('http://localhost:3000/item')
       .then((result) => {
-        this.$router.push({
-          name: 'MainV2'
-        })
+        this.$emit('delete-stricken-items') // Tell parent to do something
+        // this.$router.push({
+        //   name: 'MainV2'
+        // })
       })
       .catch(e => {
         this.errors.push(e)

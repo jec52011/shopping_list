@@ -19,6 +19,14 @@ router.post('/', function(req, res, next) {
   });
 });
 
+/* UPDATE ITEM */
+router.put('/:id', function(req, res, next) {
+  Item.findByIdAndUpdate(req.params.id, req.body, function (err, post) {
+    if (err) return next(err);
+    res.json(post);
+  });
+});
+
 /* DELETE ITEMS */
 router.delete('/', function(req, res, next) {
   Item.deleteMany({ strike: true }, function (err, post) {

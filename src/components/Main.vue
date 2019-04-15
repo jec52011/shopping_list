@@ -7,7 +7,7 @@
           <b-form-checkbox v-model="data.item.strike" :checked="changeVariant(data.item)">{{data.value}}</b-form-checkbox>
         </template>
 
-        <template slot="item" slot-scope="data">
+        <template slot="name" slot-scope="data">
           {{ data.value }}
         </template>
 
@@ -22,74 +22,43 @@
       </b-table>
     </b-row>
 
-    <b-row>
-      <b-form class="mx-auto" inline @submit="addItem">
-        <label class="sr-only" for="inputName">Item: </label>
-        <b-input
-          class="mb-2 mr-sm-2 mb-sm-0"
-          id="inputName"
-          placeholder="Item name"
-          type="text"
-          v-model="form.newItem"
-          required />
-
-        <label class="sr-only" for="inputStore">Store: </label>
-        <b-input
-          class="mb-2 mr-sm-2 mb-sm-0"
-          id="inputStore"
-          placeholder="Store"
-          type="text"
-          v-model="form.newStore"
-           />
-
-        <label class="sr-only" for="inputLocation">Location: </label>
-        <b-input
-          class="mb-2 mr-sm-2 mb-sm-0"
-          id="inputName"
-          placeholder="Location"
-          type="text"
-          v-model="form.newLocation"
-           />
-        <b-button type="submit" variant="primary">Add</b-button>
-      </b-form>
-    </b-row>
-
+    <AddItem></AddItem>
+    <DeleteItem @delete-stricken-items="removeItems()"></DeleteItem>
 
   </b-container>
 </template>
 
 <script>
-// Next time, text fields for adding, filter?, add location data
+
+import AddItem from './AddItem'
+import DeleteItem from './DeleteItem'
+import axios from 'axios'
+
 export default {
+  name: 'Main',
+  components: { AddItem, DeleteItem },
   data () {
     return {
-      form: {
-        newItem:'',
-        newStore:'',
-        newLocation:''
+      fields: {
+        name: { key: 'name', label: 'Item', sortable: true, 'class': 'text-center' },
+        store: { key: 'store', label: 'Store', sortable: true },
+        location: { key: 'location', label: 'Location', 'class': 'text-center' },
+        strike: { key: 'strike', label: 'Check'}
       },
       items: [],
-      // items: [
-      //   { strike: true, item: 'Quinoa', store: 'Costco', location: 'Norwalk', _rowVariant: 'danger' },
-      //   { strike: false, item: 'Stand Mixer', store: 'Macy\'s', location: 'Trumbull', _rowVariant: 'danger' },
-      //   { strike: true, item: 'Polo Shirt', store: 'Macy\'s', location: 'Trumbull', _rowVariant: 'danger' },
-      //   { strike: false, item: 'Carrots', store: 'Costco', location: 'Any', _rowVariant: 'danger' }
-      // ],
-      fields: [
-        { key: 'strike', label: 'Check' },
-        { key: 'item', label: 'Item' },
-        { key: 'store', label: 'Store' },
-        { key: 'location', label: 'Location'}
-      ]
+      errors: []
     }
   },
+  created () {
+    axios.get(`http://localhost:3000/item`)
+    .then(response => {
+      this.items = response.data
+    })
+    .catch(e => {
+      this.errors.push(e)
+    })
+  },
   methods: {
-    addItem () {
-      this.items.push({strike: false, item: this.form.newItem, store: this.form.newStore, location: this.form.newLocation})
-      this.form.newItem = ''
-      this.form.newStore = ''
-      this.form.newLocation = ''
-    },
     changeVariant (row) {
       if (row.strike == true) {
         row._rowVariant = 'danger'
@@ -97,14 +66,21 @@ export default {
       else {
         row._rowVariant = ''
       }
+
+      axios.put(`http://localhost:3000/item/` + row._id, row)
+      .then(response => {
+        // for now this is empty
+      })
+      .catch(e => {
+        this.errors.push(e)
+      })
     },
-    onSubmit (evt) {
-      evt.preventDefault()
-      //alert(JSON.stringify(this.form.name))
-      this.items.push({strike: false, item: this.form.newItem, store: this.form.newStore, location: this.form.newLocation})
-      this.form.newItem = ''
-      this.form.newStore = ''
-      this.form.newLocation = ''
+    removeItems () {
+      for (var i = this.items.length - 1; i >= 0; i--) {
+        if (this.items[i].strike === true) {
+          this.items.splice(i, 1);
+        }
+      }
     }
   }
 }
@@ -112,23 +88,12 @@ export default {
 
 <style>
   table { border-collapse: collapse; }
-  td { position: relative; }
-  tr.table-danger td:before {
-  content: " ";
-  position: absolute;
-  top: 50%;
-  left: 0;
-  border-bottom: 1px solid #111;
-  width: 100%;
-  }
   .table-danger, .table-danger > th, .table-danger > td {
-    background-color: transparent;
+    background-color: #ffffcc;
   }
-  .table-hover .table-danger:hover > td, .table-hover .table-danger:hover > th {
-    background-color: rgba(0, 0, 0, 0.05);
-  }
-  .table-hover .table-danger:hover {
-  	background-color: rgba(0, 0, 0, 0.05);
+  .table-hover .table-danger:hover, .table-hover .table-danger:hover > td, .table-hover .table-danger:hover > th {
+  	background-color: #ffff99;
+    /*box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.8);*/
   }
   .table-danger th, .table-danger td, .table-danger thead th, .table-danger tbody + tbody {
     border-color: rgb(222, 226, 230);
